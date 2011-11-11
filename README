@@ -1,0 +1,40 @@
+require "./genetic_programmer.rb"
+# => true 
+
+gp = GeneticProgrammer.new
+ex1 = gp.example_1
+# => #<Node::Operator:0x00000102079ba0 @operation=:if_method, @name="if_method_1320984332", @operands=[#<Node::Operator:0x0000010207a0f0 @operation=:greater_method, @name="greater_method_1320984332", @operands=[#<Node::Parameter:0x0000010207a1b8 @index=0>, #<Node::Constant:0x0000010207a190 @value=3>]>, #<Node::Operator:0x00000102079f60 @operation=:add_method, @name="add_method_1320984332", @operands=[#<Node::Parameter:0x00000102079fd8 @index=1>, #<Node::Constant:0x00000102079fb0 @value=5>]>, #<Node::Operator:0x00000102079d08 @operation=:subtract_method, @name="subtract_method_1320984332", @operands=[#<Node::Parameter:0x00000102079e48 @index=1>, #<Node::Constant:0x00000102079da8 @value=2>]>]> 
+
+Node.method_modules
+# => [:If, :Greater, :Add, :Subtract] 
+Node.node_methods
+## => [:if_method, :greater_method, :add_method, :subtract_method] 
+
+ex1.display; 0
+{:@name=>"if_method_1320984332"}
+{:@name=>"greater_method_1320984332"}
+{:@index=>0}
+{:@value=>3}
+{:display@name=>"add_method_1320984332"}
+{:@index=>1}
+{:@value=>5}
+{:@name=display>"subtract_method_1320984332"}
+{:@index=>1}
+{:@value=>2}
+# => 0 
+
+ex1.evaluate([2,3])
+# => 1 
+
+random1 = gp.make_random_tree(2)
+# => #<Node::Operator:0x00000100a43020 @operation=:add_method, @name="add_method_1320987083", @operands=[#<Node::Constant:0x00000100a430c0 @value=9>, #<Node::Parameter:0x00000100a43048 @index=1>]> 
+random1.display; 0
+{:@name=>"add_method_1320987083"}
+	{:@value=>9}
+	{:@index=>1}
+# => 0 
+
+random1.evaluate [2,3]
+# => 12
+
+gp.score rand1, gp.input_output_rows
