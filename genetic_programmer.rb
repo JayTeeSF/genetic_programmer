@@ -1,28 +1,12 @@
 require "./node.rb"
 # GeneticProgrammer.example_1([2,3])
-class GeneticProgrammer
+module GeneticProgrammer
+  extend self
+  INPUT_RANDOM_X = INPUT_RANDOM_Y = 40
+  DEFAULT_DATASET_SIZE = 200
 
-  def module_list
-    @module_list ||= Node.method_modules
-  end
-
-  def choose_a_module
-    module_list[rand(module_list.size)]
-  end
-
-  def make_random_tree(data_size, max_depth=4, function_node_probability=0.5, parameter_node_probability=0.6)
-    random_number = rand
-    if random_number < function_node_probability && max_depth > 0
-      choosen_module = choose_a_module
-      param_count = choosen_module.action_arity
-      action = choosen_module.action
-      sub_nodes = param_count.times.collect { make_random_tree(data_size, max_depth - 1, function_node_probability, parameter_node_probability) }
-      Node::Operator.new(action, sub_nodes)
-    elsif random_number < parameter_node_probability
-      Node::Parameter.new(rand(data_size))
-    else
-      Node::Constant.new(rand(11))
-    end
+  def game_interface(node_tree)
+    Node::Operator.new(:modulo, [node_tree, Node::Constant.new(4)])
   end
 
   def example_1
@@ -35,37 +19,11 @@ class GeneticProgrammer
         )
   end
 
-  def input_output_rows count=200
+  def input_output_rows count=DEFAULT_DATASET_SIZE
     count.times.map do
-      x = rand(40)
-      y = rand(40)
-      [x,y,_function(x,y)]
-    end
-  end
-
-  # move this to the node class!
-  def mutate tree, data_size, probability_of_change=0.1
-    if rand < probability_of_change
-        puts "new..."
-      make_random_tree data_size
-    else
-      modified_tree = tree.dup
-      if modified_tree.respond_to?(:operands=)
-        puts "mod..."
-        modified_tree.operands = tree.operands.collect do |o_node|
-          mutate(o_node, data_size, probability_of_change)
-        end
-      end
-      modified_tree
-    end
-  end
-
-  def score tree, data_rows
-    data_rows.reduce(0) do |sum, data_row|
-      Node.log { "data_row: #{data_row.inspect}" }
-      result = tree.evaluate [data_row[0], data_row[1]]
-      Node.log { "result (#{result}) vs. (#{data_row[2]}) actual" }
-      sum += (result - data_row[2]).abs
+      x = rand(INPUT_RANDOM_X)
+      y = rand(INPUT_RANDOM_Y)
+      [[x,y],_function(x,y)]
     end
   end
 
