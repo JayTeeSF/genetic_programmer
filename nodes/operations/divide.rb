@@ -11,7 +11,7 @@ module Node::Operation::Divide
 
   def divide_method data=[]
     Node.log { "divide called w/ #{data.inspect}" }
-    return nil if 0 == data[1]
+    return 0 if 0 == data[1]
     Float(data[0]) / data[1]
   end
 end

@@ -11,7 +11,7 @@ module Node::Operation::Modulo
 
   def modulo_method data=[]
     Node.log { "modulo called w/ #{data.inspect}" }
-    return nil if 0 == data[1]
+    return 0 if 0 == data[1]
     data[0] % data[1]
   end
 end

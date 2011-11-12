@@ -10,6 +10,10 @@ module Node
       @operands = _operands || []
     end
 
+    def mutate data_size, probability_of_change=0.1
+      rand < probability_of_change ?  Node.random(data_size) : deep_mutate(data_size, probability_of_change)
+    end
+
     def deep_copy
       dup.tap do |modified_node|
         unless operands.empty?
